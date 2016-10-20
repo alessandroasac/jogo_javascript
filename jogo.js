@@ -3,12 +3,14 @@
 const MAX_PULOS = 3;
 const ALTURA = window.innerWidth > 600 ? 600 : window.innerHeight;
 const LARGURA = window.innerWidth > 600 ? 600 : window.innerWidth;
+// const ALTURA = window.innerHeight;
+// const LARGURA = window.innerWidth;
 const GRAVIDADE = 1.5;
 
 class Chao {
 
   constructor() {
-    this.y = 550;
+    this.y = ALTURA - 50;
     this.altura = 50;
     this.cor = '#ffdf70';
   }
@@ -56,32 +58,53 @@ class Bloco {
   }
 }
 
-class Obstaculo {
+class Obstaculos {
 
   constructor() {
     this._obs = [];
     this.cores = ['#ffbc1c', '#ff1c1c', '#ff85e1', '#52a7ff', '#78ff5d'];
+    this.velocidade = 6;
+    this.tempoInsere = 0;
   }
 
-  inserir() {
+  _inserir() {
     this._obs.push({
       x: LARGURA,
       largura: 30 + Math.floor(21 * Math.random()),
       altura: 30 + Math.floor(120 * Math.random()),
-      cor: this.cores[Math.floor(5 * Math.random())],
-
-      atualizar: function() {
-
-      },
-
-      desenhar: function() {
-        for (let i = 0; i < this._obs.length; i++) {
-          let obs = this._obs[i];
-          ctx.fillStyle = obs.cor;
-          ctx.fillRect(obs.x, chao.y - obs.altura, obs.largura, obs.altura);
-        }
-      }
+      cor: this.cores[Math.floor(5 * Math.random())]
     });
+
+    this.tempoInsere = 30 + Math.floor(20 * Math.random());
+  }
+
+  atualizar() {
+
+    if (this.tempoInsere == 0) {
+      this._inserir();
+    } else {
+      this.tempoInsere--;
+    }
+
+    for (let i = 0, tam = this._obs.length; i < tam; i++) {
+      let obs = this._obs[i];
+
+      obs.x -= this.velocidade;
+
+      if (obs.x <= -obs.largura) {
+        this._obs.splice(i, 1);
+        tam--;
+        i--;
+      }
+    }
+  }
+
+  desenhar(ctx, chao) {
+    for (let i = 0; i < this._obs.length; i++) {
+      let obs = this._obs[i];
+      ctx.fillStyle = obs.cor;
+      ctx.fillRect(obs.x, chao.y - obs.altura, obs.largura, obs.altura);
+    }
   }
 }
 
@@ -90,7 +113,8 @@ class Jogo {
   constructor() {
     this.chao = new Chao();
     this.bloco = new Bloco();
-    this.canvas = this.criarCanvas();
+    this.obstaculos = new Obstaculos();
+    this.canvas = this._criarCanvas();
     this.ctx = this.canvas.getContext('2d');
     this.frames = 0;
   }
@@ -112,6 +136,7 @@ class Jogo {
     this.frames++;
 
     this.bloco.atualizar(this.chao);
+    this.obstaculos.atualizar();
   }
 
   _desenhar() {
@@ -119,10 +144,11 @@ class Jogo {
     this.ctx.fillRect(0, 0, LARGURA, ALTURA);
 
     this.chao.desenhar(this.ctx);
+    this.obstaculos.desenhar(this.ctx, this.chao);
     this.bloco.desenhar(this.ctx);
   }
 
-  criarCanvas() {
+  _criarCanvas() {
     const canvas = document.createElement('canvas');
     canvas.width = LARGURA;
     canvas.height = ALTURA;
