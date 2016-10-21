@@ -1,4 +1,4 @@
-import { LARGURA } from './Jogo';
+import { LARGURA } from '../controllers/JogoController';
 
 class Obstaculos {
 
@@ -47,6 +47,10 @@ class Obstaculos {
       ctx.fillStyle = obs.cor;
       ctx.fillRect(obs.x, chao.y - obs.altura, obs.largura, obs.altura);
     }
+  }
+
+  limpar() {
+    this._obs = [];
   }
 }
 

@@ -2,13 +2,6 @@ import Chao from './Chao';
 import Bloco from './Bloco';
 import Obstaculos from './Obstaculos';
 
-export const MAX_PULOS = 3;
-export const ALTURA = window.innerWidth > 600 ? 600 : window.innerHeight;
-export const LARGURA = window.innerWidth > 600 ? 600 : window.innerWidth;
-// export const ALTURA = window.innerHeight;
-// export const LARGURA = window.innerWidth;
-export const GRAVIDADE = 1.5;
-
 
 class Jogo {
 
@@ -16,47 +9,66 @@ class Jogo {
     this.chao = new Chao();
     this.bloco = new Bloco();
     this.obstaculos = new Obstaculos();
-    this.canvas = this._criarCanvas();
-    this.ctx = this.canvas.getContext('2d');
-    this.frames = 0;
+    this.setarJogar();
   }
 
   inicializar() {
-    document.body.appendChild(this.canvas);
-    document.addEventListener('mousedown', () => this.bloco.pular());
-    this._rodar();
+    document.addEventListener('mousedown', () => {
+      if (this.jogando()) {
+        this.bloco.pular()
+      } else if (this.jogar()) {
+        this.setarJogando();
+      } else if (this.perdeu() && this.bloco.sumiu()) {
+        this.setarJogar();
+        this.bloco.y = 0;
+        this.bloco.velocidade = 0;
+      }
+    });
   }
 
-  _rodar() {
-    this._atualizar(this.bloco);
-    this._desenhar(this.bloco, this.ctx, this.chao);
+  atualizar() {
 
-    window.requestAnimationFrame(() => this._rodar(this.bloco, this.ctx, this.chao));
+    this.bloco.atualizar(this.chao, this.perdeu());
+
+    if (this.jogando()) {
+
+      this.obstaculos.atualizar();
+
+      for (let i = 0, tam = this.obstaculos._obs.length; i < tam; i++) {
+        let obs = this.obstaculos._obs[i];
+        if (this.bloco.x < obs.x + obs.largura
+          && this.bloco.x + this.bloco.largura >= obs.x
+          && this.bloco.y + this.bloco.altura >= this.chao.y - obs.altura) {
+          this.setarPerdeu();
+          this.obstaculos.limpar();
+          break;
+        }
+      }
+    }
   }
 
-  _atualizar() {
-    this.frames++;
-
-    this.bloco.atualizar(this.chao);
-    this.obstaculos.atualizar();
+  jogar() {
+    return this.estadoAtual === 0;
   }
 
-  _desenhar() {
-    this.ctx.fillStyle = '#80daff';
-    this.ctx.fillRect(0, 0, LARGURA, ALTURA);
-
-    this.chao.desenhar(this.ctx);
-    this.obstaculos.desenhar(this.ctx, this.chao);
-    this.bloco.desenhar(this.ctx);
+  jogando() {
+    return this.estadoAtual === 1;
   }
 
-  _criarCanvas() {
-    const canvas = document.createElement('canvas');
-    canvas.width = LARGURA;
-    canvas.height = ALTURA;
-    canvas.style.border = '1px solid #000';
+  perdeu() {
+    return this.estadoAtual === 2;
+  }
 
-    return canvas;
+  setarJogar() {
+    this.estadoAtual = 0;
+  }
+
+  setarJogando() {
+    this.estadoAtual = 1;
+  }
+
+  setarPerdeu() {
+    this.estadoAtual = 2;
   }
 
 }

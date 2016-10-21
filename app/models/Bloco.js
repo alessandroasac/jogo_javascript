@@ -1,4 +1,6 @@
-import { GRAVIDADE, MAX_PULOS } from './Jogo';
+import { ALTURA, LARGURA, GRAVIDADE } from '../controllers/JogoController';
+
+const MAX_PULOS = 3;
 
 class Bloco {
 
@@ -14,13 +16,14 @@ class Bloco {
 
   }
 
-  atualizar(chao) {
+  atualizar(chao, perdeu) {
     this.velocidade += GRAVIDADE;
     this.y += this.velocidade;
 
-    if (this.y > chao.y - this.altura) {
+    if (this.y > chao.y - this.altura && !perdeu) {
       this.y = chao.y - this.altura;
       this.qntPulos = 0;
+      this.velocidade = 0;
     }
   }
 
@@ -31,10 +34,10 @@ class Bloco {
     }
   }
 
-  desenhar(ctx) {
-    ctx.fillStyle = this.cor;
-    ctx.fillRect(this.x, this.y, this.largura, this.altura);
+  sumiu() {
+    return this.y >= 2 * ALTURA;
   }
+
 }
 
 

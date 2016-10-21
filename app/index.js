@@ -1,5 +1,5 @@
 import './estilos_jogo.css';
 
-import { Jogo } from './models';
+import JogoController from './controllers/JogoController';
 
-new Jogo().inicializar();
+new JogoController().inicializar();

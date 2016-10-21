@@ -1,1 +1,0 @@
-export Jogo from './Jogo';

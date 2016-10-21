@@ -1,4 +1,5 @@
-import { ALTURA, LARGURA } from './Jogo';
+import { ALTURA } from '../controllers/JogoController';
+
 
 class Chao {
 
@@ -8,10 +9,6 @@ class Chao {
     this.cor = '#ffdf70';
   }
 
-  desenhar(ctx) {
-    ctx.fillStyle = this.cor;
-    ctx.fillRect(0, this.y, LARGURA, this.altura);
-  }
 }
 
 export default Chao;
