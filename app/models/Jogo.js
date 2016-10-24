@@ -9,53 +9,46 @@ class Jogo {
     this.chao = new Chao();
     this.bloco = new Bloco();
     this.obstaculos = new Obstaculos();
+
     this.setarJogar();
   }
 
-  inicializar() {
-    document.addEventListener('mousedown', () => {
-      if (this.jogando()) {
-        this.bloco.pular()
-      } else if (this.jogar()) {
-        this.setarJogando();
-      } else if (this.perdeu() && this.bloco.sumiu()) {
-        this.setarJogar();
-        this.bloco.y = 0;
-        this.bloco.velocidade = 0;
-      }
-    });
+  clique() {
+    if (this.jogando) {
+      this.bloco.pular()
+    } else if (this.jogar) {
+      this.setarJogando();
+    } else if (this.perdeu && this.bloco.sumiu) {
+      this.setarJogar();
+      this.bloco.y = 0;
+      this.bloco.velocidade = 0;
+    }
   }
 
   atualizar() {
 
-    this.bloco.atualizar(this.chao, this.perdeu());
+    this.bloco.atualizar(this.chao, this.perdeu);
 
-    if (this.jogando()) {
+    if (this.jogando) {
 
       this.obstaculos.atualizar();
 
-      for (let i = 0, tam = this.obstaculos._obs.length; i < tam; i++) {
-        let obs = this.obstaculos._obs[i];
-        if (this.bloco.x < obs.x + obs.largura
-          && this.bloco.x + this.bloco.largura >= obs.x
-          && this.bloco.y + this.bloco.altura >= this.chao.y - obs.altura) {
-          this.setarPerdeu();
-          this.obstaculos.limpar();
-          break;
-        }
+      if (this.obstaculos.colidiramCom(this.bloco, this.chao)) {
+        this.setarPerdeu();
+        this.obstaculos.limpar();
       }
     }
   }
 
-  jogar() {
+  get jogar() {
     return this.estadoAtual === 0;
   }
 
-  jogando() {
+  get jogando() {
     return this.estadoAtual === 1;
   }
 
-  perdeu() {
+  get perdeu() {
     return this.estadoAtual === 2;
   }
 

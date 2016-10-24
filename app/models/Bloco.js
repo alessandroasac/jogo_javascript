@@ -34,7 +34,7 @@ class Bloco {
     }
   }
 
-  sumiu() {
+  get sumiu() {
     return this.y >= 2 * ALTURA;
   }
 

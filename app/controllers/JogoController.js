@@ -27,17 +27,20 @@ class JogoController {
 
   inicializar() {
     document.body.appendChild(this.canvas);
-    this.jogo.inicializar();
+    document.addEventListener('mousedown', () => this.jogo.clique() );
     this._rodar();
   }
 
   _rodar() {
     this._atualizar();
+    this._desenhar();
+    window.requestAnimationFrame(() => this._rodar());
+  }
+
+  _desenhar() {
     this.jogoView.desenharJogo();
     this.chaoView.desenharChao();
     this.blocoView.desenharBloco(this.ctx, this.jogo.bloco);
-
-    window.requestAnimationFrame(() => this._rodar());
   }
 
   _atualizar() {

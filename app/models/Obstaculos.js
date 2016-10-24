@@ -1,22 +1,14 @@
-import { LARGURA } from '../controllers/JogoController';
+import Obstaculo from './Obstaculo';
 
 class Obstaculos {
 
   constructor() {
     this._obs = [];
-    this.cores = ['#ffbc1c', '#ff1c1c', '#ff85e1', '#52a7ff', '#78ff5d'];
-    this.velocidade = 6;
     this.tempoInsere = 0;
   }
 
   _inserir() {
-    this._obs.push({
-      x: LARGURA,
-      largura: 30 + Math.floor(21 * Math.random()),
-      altura: 30 + Math.floor(120 * Math.random()),
-      cor: this.cores[Math.floor(5 * Math.random())]
-    });
-
+    this._obs.push( new Obstaculo() );
     this.tempoInsere = 30 + Math.floor(20 * Math.random());
   }
 
@@ -28,29 +20,26 @@ class Obstaculos {
       this.tempoInsere--;
     }
 
-    for (let i = 0, tam = this._obs.length; i < tam; i++) {
+    for (let i = this._obs.length - 1; i >= 0; i--) {
       let obs = this._obs[i];
-
-      obs.x -= this.velocidade;
-
-      if (obs.x <= -obs.largura) {
+      obs.atualizar();
+      if (obs.sumiu) {
         this._obs.splice(i, 1);
-        tam--;
-        i--;
       }
     }
+
   }
 
   desenhar(ctx, chao) {
-    for (let i = 0; i < this._obs.length; i++) {
-      let obs = this._obs[i];
-      ctx.fillStyle = obs.cor;
-      ctx.fillRect(obs.x, chao.y - obs.altura, obs.largura, obs.altura);
-    }
+    this._obs.forEach(obs => obs.desenhar(ctx, chao));
   }
 
   limpar() {
     this._obs = [];
+  }
+
+  colidiramCom(bloco, chao) {
+    return this._obs.some(obs => obs.colidiuCom(bloco, chao));
   }
 }
 

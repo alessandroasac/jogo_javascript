@@ -1,5 +1,3 @@
-import { LARGURA } from '../controllers/JogoController';
-
 class BlocoView {
 
   desenharBloco(ctx, bloco) {
