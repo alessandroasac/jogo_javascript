@@ -5,17 +5,19 @@ import Obstaculos from './Obstaculos';
 
 class Jogo {
 
-  constructor() {
+  constructor(views) {
     this.chao = new Chao();
     this.bloco = new Bloco();
-    this.obstaculos = new Obstaculos();
+    this.obstaculos = new Obstaculos(this.chao);
+
+    this.views = views;
 
     this.setarJogar();
   }
 
   clique() {
     if (this.jogando) {
-      this.bloco.pular()
+      this.bloco.pular();
     } else if (this.jogar) {
       this.setarJogando();
     } else if (this.perdeu && this.bloco.sumiu) {
@@ -26,18 +28,22 @@ class Jogo {
   }
 
   atualizar() {
-
-    this.bloco.atualizar(this.chao, this.perdeu);
+    this.bloco.atualizar(this);
 
     if (this.jogando) {
-
       this.obstaculos.atualizar();
 
-      if (this.obstaculos.colidiramCom(this.bloco, this.chao)) {
+      if (this.obstaculos.colidiramCom(this.bloco)) {
         this.setarPerdeu();
         this.obstaculos.limpar();
       }
     }
+
+    this.notificarViews();
+  }
+
+  notificarViews() {
+    this.views.forEach(view => view.desenhar(this));
   }
 
   get jogar() {

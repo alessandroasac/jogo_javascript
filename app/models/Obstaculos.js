@@ -2,44 +2,44 @@ import Obstaculo from './Obstaculo';
 
 class Obstaculos {
 
-  constructor() {
-    this._obs = [];
+  constructor(chao, ctx) {
+    this.obs = [];
     this.tempoInsere = 0;
+    this.chao = chao;
+    this.ctx = ctx;
   }
 
-  _inserir() {
-    this._obs.push( new Obstaculo() );
+  inserir() {
+    this.obs.push(new Obstaculo(this.chao, this.ctx));
     this.tempoInsere = 30 + Math.floor(20 * Math.random());
   }
 
   atualizar() {
-
-    if (this.tempoInsere == 0) {
-      this._inserir();
+    if (this.tempoInsere === 0) {
+      this.inserir();
     } else {
       this.tempoInsere--;
     }
 
-    for (let i = this._obs.length - 1; i >= 0; i--) {
-      let obs = this._obs[i];
+    for (let i = this.obs.length - 1; i >= 0; i--) {
+      const obs = this.obs[i];
       obs.atualizar();
       if (obs.sumiu) {
-        this._obs.splice(i, 1);
+        this.obs.splice(i, 1);
       }
     }
-
   }
 
-  desenhar(ctx, chao) {
-    this._obs.forEach(obs => obs.desenhar(ctx, chao));
+  desenhar() {
+    this.obs.forEach(obs => obs.desenhar());
   }
 
   limpar() {
-    this._obs = [];
+    this.obs = [];
   }
 
-  colidiramCom(bloco, chao) {
-    return this._obs.some(obs => obs.colidiuCom(bloco, chao));
+  colidiramCom(bloco) {
+    return this.obs.some(obs => obs.colidiuCom(bloco));
   }
 }
 

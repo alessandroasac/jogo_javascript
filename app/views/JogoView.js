@@ -2,27 +2,23 @@ import { LARGURA, ALTURA } from '../controllers/JogoController';
 
 class JogoView {
 
-  constructor(jogo, ctx) {
+  constructor(ctx) {
     this.ctx = ctx;
-    this.jogo = jogo;
   }
 
-  desenharJogo() {
+  desenhar({ jogar, perdeu }) {
+    this.desenharCenario();
 
-    this._desenharCenario()
-
-    if (this.jogo.jogar) {
+    if (jogar) {
       this.ctx.fillStyle = 'green';
       this.ctx.fillRect((LARGURA / 2) - 50, (ALTURA / 2) - 50, 100, 100);
-    } else if (this.jogo.perdeu) {
+    } else if (perdeu) {
       this.ctx.fillStyle = 'red';
       this.ctx.fillRect((LARGURA / 2) - 50, (ALTURA / 2) - 50, 100, 100);
-    } else if (this.jogo.jogando) {
-      this.jogo.obstaculos.desenhar(this.ctx, this.jogo.chao);
     }
   }
 
-  _desenharCenario() {
+  desenharCenario() {
     this.ctx.fillStyle = '#80daff';
     this.ctx.fillRect(0, 0, LARGURA, ALTURA);
   }

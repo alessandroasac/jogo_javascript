@@ -1,8 +1,12 @@
 class BlocoView {
 
-  desenharBloco(ctx, bloco) {
-    ctx.fillStyle = bloco.cor;
-    ctx.fillRect(bloco.x, bloco.y, bloco.largura, bloco.altura);
+  constructor(ctx) {
+    this.ctx = ctx;
+  }
+
+  desenhar({ bloco }) {
+    this.ctx.fillStyle = bloco.cor;
+    this.ctx.fillRect(bloco.x, bloco.y, bloco.largura, bloco.altura);
   }
 
 }

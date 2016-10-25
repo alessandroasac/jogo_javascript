@@ -2,14 +2,13 @@ import { LARGURA } from '../controllers/JogoController';
 
 class ChaoView {
 
-  constructor(chao, ctx) {
+  constructor(ctx) {
     this.ctx = ctx;
-    this.chao = chao;
   }
 
-  desenharChao() {
-    this.ctx.fillStyle = this.chao.cor;
-    this.ctx.fillRect(0, this.chao.y, LARGURA, this.chao.altura);
+  desenhar({ chao }) {
+    this.ctx.fillStyle = chao.cor;
+    this.ctx.fillRect(0, chao.y, LARGURA, chao.altura);
   }
 
 }
