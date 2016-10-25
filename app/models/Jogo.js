@@ -5,7 +5,7 @@ import Obstaculos from './Obstaculos';
 
 class Jogo {
 
-  constructor(views) {
+  constructor(record, views) {
     this.chao = new Chao();
     this.bloco = new Bloco();
     this.obstaculos = new Obstaculos(this.chao);
@@ -13,6 +13,8 @@ class Jogo {
     this.views = views;
 
     this.setarJogar();
+
+    this.record = record;
   }
 
   clique() {
@@ -37,11 +39,19 @@ class Jogo {
 
       if (this.obstaculos.colidiramCom(this.bloco)) {
         this.setarPerdeu();
+        this.atualizarRecord();
       }
     }
 
     // Notificando às views que houve atualização
     this.views.forEach(view => view.desenhar(this));
+  }
+
+  atualizarRecord() {
+    if (this.score > this.record) {
+      this.record = this.score;
+      this.novoRecord = true;
+    }
   }
 
   get jogar() {
@@ -59,6 +69,7 @@ class Jogo {
   setarJogar() {
     this.estadoAtual = 0;
     this.score = 0;
+    this.novoRecord = false;
   }
 
   setarJogando() {
