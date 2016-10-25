@@ -22,8 +22,8 @@ class Jogo {
       this.setarJogando();
     } else if (this.perdeu && this.bloco.sumiu) {
       this.setarJogar();
-      this.bloco.y = 0;
-      this.bloco.velocidade = 0;
+      this.obstaculos.limpar();
+      this.bloco.resetar();
     }
   }
 
@@ -31,18 +31,16 @@ class Jogo {
     this.bloco.atualizar(this);
 
     if (this.jogando) {
-      this.obstaculos.atualizar();
+      const blocosRemovidos = this.obstaculos.atualizar();
+
+      this.score += blocosRemovidos;
 
       if (this.obstaculos.colidiramCom(this.bloco)) {
         this.setarPerdeu();
-        this.obstaculos.limpar();
       }
     }
 
-    this.notificarViews();
-  }
-
-  notificarViews() {
+    // Notificando às views que houve atualização
     this.views.forEach(view => view.desenhar(this));
   }
 
@@ -60,6 +58,7 @@ class Jogo {
 
   setarJogar() {
     this.estadoAtual = 0;
+    this.score = 0;
   }
 
   setarJogando() {

@@ -38,6 +38,11 @@ class Bloco {
     return this.y >= 2 * ALTURA;
   }
 
+  resetar() {
+    this.y = 0;
+    this.velocidade = 0;
+  }
+
 }
 
 

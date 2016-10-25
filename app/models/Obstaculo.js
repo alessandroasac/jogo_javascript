@@ -17,8 +17,8 @@ class Obstaculo {
     this.x -= this.velocidade;
   }
 
-  get sumiu() {
-    return this.x <= -this.largura;
+  get visivel() {
+    return this.x > -this.largura;
   }
 
   colidiuCom({ x, y, altura, largura }) {

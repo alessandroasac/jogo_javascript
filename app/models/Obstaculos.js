@@ -21,13 +21,17 @@ class Obstaculos {
       this.tempoInsere--;
     }
 
+    let blocosRemovidos = 0;
+
     for (let i = this.obs.length - 1; i >= 0; i--) {
-      const obs = this.obs[i];
-      obs.atualizar();
-      if (obs.sumiu) {
+      this.obs[i].atualizar();
+      if (!this.obs[i].visivel) {
         this.obs.splice(i, 1);
+        blocosRemovidos++;
       }
     }
+
+    return blocosRemovidos;
   }
 
   desenhar() {
