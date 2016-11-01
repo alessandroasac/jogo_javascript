@@ -1,9 +1,7 @@
 import Jogo from '../models/Jogo';
 
-import JogoView from '../views/JogoView';
-import ChaoView from '../views/ChaoView';
-import BlocoView from '../views/BlocoView';
-import ObstaculosView from '../views/ObstaculosView';
+import { JogoView } from '../views';
+import imagemUrl from '../imagens/sheet.png';
 
 export const ALTURA = window.innerWidth > 600 ? 600 : window.innerHeight;
 export const LARGURA = window.innerWidth > 600 ? 600 : window.innerWidth;
@@ -14,18 +12,16 @@ class JogoController {
 
   constructor() {
     this.canvas = JogoController.criarCanvas();
-    this.ctx = this.canvas.getContext('2d');
+    const ctx = this.canvas.getContext('2d');
 
     const record = localStorage.getItem('record') || 0;
 
-    const views = [
-      new JogoView(this.ctx),
-      new ChaoView(this.ctx),
-      new BlocoView(this.ctx),
-      new ObstaculosView(this.ctx),
-    ];
+    const imagem = new Image();
+    imagem.src = imagemUrl;
 
-    this.jogo = new Jogo(record, views);
+    const jogoView = new JogoView(ctx, imagem);
+
+    this.jogo = new Jogo(record, jogoView);
   }
 
   inicializar() {

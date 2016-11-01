@@ -4,10 +4,8 @@ class ObstaculosView {
     this.ctx = ctx;
   }
 
-  desenhar({ jogando, obstaculos }) {
-    if (jogando) {
-      obstaculos.obs.forEach(obs => this.desenharObstaculo(obs));
-    }
+  desenhar({ obs }) {
+    obs.forEach(obstaculo => this.desenharObstaculo(obstaculo));
   }
 
   desenharObstaculo({ x, y, altura, largura, cor }) {

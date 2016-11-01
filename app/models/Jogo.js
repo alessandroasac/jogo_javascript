@@ -1,16 +1,14 @@
-import Chao from './Chao';
-import Bloco from './Bloco';
-import Obstaculos from './Obstaculos';
+import { Chao, Bloco, Obstaculos } from '.';
 
 
 class Jogo {
 
-  constructor(record, views) {
+  constructor(record, jogoView) {
     this.chao = new Chao();
     this.bloco = new Bloco();
     this.obstaculos = new Obstaculos(this.chao);
 
-    this.views = views;
+    this.jogoView = jogoView;
 
     this.setarJogar();
 
@@ -43,8 +41,8 @@ class Jogo {
       }
     }
 
-    // Notificando às views que houve atualização
-    this.views.forEach(view => view.desenhar(this));
+    // Notificando à view que houve atualização
+    this.jogoView.desenhar(this);
   }
 
   atualizarRecord() {

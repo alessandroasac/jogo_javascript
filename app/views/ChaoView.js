@@ -4,11 +4,12 @@ class ChaoView {
 
   constructor(ctx) {
     this.ctx = ctx;
+    this.cor = '#ffdf70';
   }
 
-  desenhar({ chao }) {
-    this.ctx.fillStyle = chao.cor;
-    this.ctx.fillRect(0, chao.y, LARGURA, chao.altura);
+  desenhar({ y, altura }) {
+    this.ctx.fillStyle = this.cor;
+    this.ctx.fillRect(0, y, LARGURA, altura);
   }
 
 }

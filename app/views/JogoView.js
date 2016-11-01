@@ -1,12 +1,19 @@
 import { LARGURA, ALTURA } from '../controllers/JogoController';
 
+import { BlocoView, ChaoView, ObstaculosView } from '../views';
+
 class JogoView {
 
-  constructor(ctx) {
+  constructor(ctx, imagem) {
     this.ctx = ctx;
+    this.imagem = imagem;
+
+    this.blocoView = new BlocoView(ctx, imagem);
+    this.chaoView = new ChaoView(ctx);
+    this.obstaculosView = new ObstaculosView(ctx);
   }
 
-  desenhar({ jogar, perdeu, score, novoRecord, record }) {
+  desenhar({ jogar, jogando, perdeu, score, novoRecord, record, bloco, chao, obstaculos }) {
     this.desenharCenario();
 
     this.ctx.fillStyle = '#fff';
@@ -27,11 +34,18 @@ class JogoView {
       this.desenharRecord(novoRecord, record);
       this.ctx.restore();
     }
+
+    this.chaoView.desenhar(chao);
+    this.blocoView.desenhar(bloco);
+
+    if (jogando) {
+      this.obstaculosView.desenhar(obstaculos);
+    }
   }
 
   desenharCenario() {
-    this.ctx.fillStyle = '#80daff';
-    this.ctx.fillRect(0, 0, LARGURA, ALTURA);
+    this.ctx.drawImage(this.imagem, 0, 0,
+      LARGURA, ALTURA, 0, 0, ALTURA, LARGURA);
   }
 
   desenharScore(score) {
