@@ -28,6 +28,7 @@ class Jogo {
   }
 
   atualizar() {
+    this.chao.atualizar();
     this.bloco.atualizar(this);
 
     if (this.jogando) {

@@ -9,7 +9,7 @@ class JogoView {
     this.imagem = imagem;
 
     this.blocoView = new BlocoView(ctx, imagem);
-    this.chaoView = new ChaoView(ctx);
+    this.chaoView = new ChaoView(ctx, imagem);
     this.obstaculosView = new ObstaculosView(ctx);
   }
 

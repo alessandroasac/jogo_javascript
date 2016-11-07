@@ -2,14 +2,18 @@ import { LARGURA } from '../controllers/JogoController';
 
 class ChaoView {
 
-  constructor(ctx) {
+  constructor(ctx, imagem) {
     this.ctx = ctx;
-    this.cor = '#ffdf70';
+    // this.cor = '#ffdf70';
+    this.imagem = imagem;
   }
 
-  desenhar({ y, altura }) {
-    this.ctx.fillStyle = this.cor;
-    this.ctx.fillRect(0, y, LARGURA, altura);
+  desenhar({ x, y, altura }) {
+    this.ctx.drawImage(this.imagem, 0, 604,
+      LARGURA, altura, x, y, LARGURA, altura);
+
+    this.ctx.drawImage(this.imagem, 0, 604,
+      LARGURA, altura, x + LARGURA, y, LARGURA, altura);
   }
 
 }
