@@ -21,18 +21,17 @@ class JogoView {
     this.ctx.fillText(score, 30, 68);
 
     if (jogar) {
-      this.ctx.fillStyle = 'green';
-      this.ctx.fillRect((LARGURA / 2) - 50, (ALTURA / 2) - 50, 100, 100);
+      this.ctx.drawImage(this.imagem, 603, 127, 397, 347,
+        (LARGURA / 2) - (397 / 2), (ALTURA / 2) - (347 / 2), 397, 347);
     } else if (perdeu) {
-      this.ctx.fillStyle = 'red';
-      this.ctx.fillRect((LARGURA / 2) - 50, (ALTURA / 2) - 50, 100, 100);
+      this.ctx.drawImage(this.imagem, 603, 478, 397, 358,
+        (LARGURA / 2) - (397 / 2), (ALTURA / 2) - (358 / 2) - (95 / 2), 397, 358);
 
-      this.ctx.save();
-      this.ctx.translate(LARGURA / 2, ALTURA / 2);
-      this.ctx.fillStyle = '#fff';
+      this.ctx.drawImage(this.imagem, 28, 879, 441, 95,
+        (LARGURA / 2) - (441 / 2), ((ALTURA / 2) + (358 / 2)) - (95 / 2) - 25, 441, 95);
+
       this.desenharScore(score);
       this.desenharRecord(novoRecord, record);
-      this.ctx.restore();
     }
 
     this.chaoView.desenhar(chao);
@@ -49,29 +48,16 @@ class JogoView {
   }
 
   desenharScore(score) {
-    let x = -39;
-    if (score < 10) {
-      x = -13;
-    } else if (score < 100) {
-      x = -26;
-    }
-
-    this.ctx.fillText(score, x, 19);
+    this.ctx.fillStyle = '#fff';
+    this.ctx.fillText(score, 375, 390);
   }
 
   desenharRecord(novoRecord, record) {
     if (novoRecord) {
-      this.ctx.fillText('Novo Record!', -150, -65);
-    } else {
-      let x = -125;
-      if (record < 10) {
-        x = -99;
-      } else if (record < 100) {
-        x = -112;
-      }
-
-      this.ctx.fillText(`Record ${record}`, x, -65);
+      this.ctx.drawImage(this.imagem, 68, 721, 287, 93,
+        (LARGURA / 2) - 180, (ALTURA / 2) + 30, 287, 93);
     }
+    this.ctx.fillText(record, 420, 470);
   }
 
 }
